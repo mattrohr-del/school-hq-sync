@@ -1,0 +1,20 @@
+{
+  "course": "Personal Health",
+  "modules": [
+    {"module": 1, "chapter": "Chapter 1: Health: Getting There & Staying There", "due": "2026-08-30", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}},
+    {"module": 2, "chapter": "Chapter 3: Managing Stress", "due": "2026-09-06", "objectives": {"Written Reflection": 4, "Quiz": 1, "Homework": 3}},
+    {"module": 3, "chapter": "Chapter 5: Preventing Violence", "due": "2026-09-13", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}},
+    {"module": 4, "chapter": "Chapter 6: Connecting & Communicating", "due": "2026-09-20", "objectives": {"Written Reflection": 4, "Quiz": 1, "Homework": 3}},
+    {"module": 5, "chapter": "Chapter 8: Recognizing and Avoiding Addiction", "due": "2026-09-27", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}},
+    {"module": 6, "chapter": "Chapter 10: Nutrition", "due": "2026-10-04", "objectives": {"Written Reflection": 4, "Quiz": 1, "Homework": 3}},
+    {"module": 7, "chapter": "Chapter 12: Personal Fitness", "due": "2026-10-12", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}},
+    {"module": 8, "chapter": "Chapter 10: Nutrition", "due": "2026-10-18", "objectives": {"Written Reflection": 4, "Quiz": 1, "Homework": 3}},
+    {"module": 9, "chapter": "Chapter 11: Healthy Weight", "due": "2026-10-25", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}},
+    {"module": 10, "chapter": "Chapter 4: Improving Sleep", "due": "2026-11-01", "objectives": {"Written Reflection": 4, "Quiz": 1, "Homework": 3}},
+    {"module": 11, "chapter": "Chapter 13: Reducing Chronic Disease Risk", "due": "2026-11-08", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}},
+    {"module": 12, "chapter": "Chapter 14: Reducing Infectious Disease Risk", "due": "2026-11-15", "objectives": {"Written Reflection": 4, "Quiz": 1, "Homework": 3}},
+    {"module": 13, "chapter": "Chapter 16: Promoting Environmental Health", "due": "2026-11-22", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}},
+    {"module": 14, "chapter": "Chapter 15: Making Healthcare Choices", "due": "2026-12-06", "objectives": {"Written Reflection": 4, "Quiz": 1, "Homework": 3}},
+    {"module": 15, "chapter": "Chapter 2: Promoting Psychological Health", "due": "2026-12-13", "objectives": {"Written Reflection": 4, "Quiz": 2, "Homework": 3}}
+  ]
+}

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import Path
 
 from .canvas import fetch_calendar
 from .config import Config
+from .manual import load_manual_assignments
 from .notion import NotionClient
 from .planner import build_plan
 
@@ -11,7 +13,11 @@ from .planner import build_plan
 def main() -> None:
     config = Config.from_env()
     now = datetime.now(config.timezone)
-    assignments = fetch_calendar(config.canvas_ics_url, config.timezone)
+    canvas_assignments = fetch_calendar(config.canvas_ics_url, config.timezone)
+    manual_assignments = load_manual_assignments(Path("data"), config.timezone)
+    assignments = list(
+        {item.source_id: item for item in canvas_assignments + manual_assignments}.values()
+    )
     plan = build_plan(
         assignments,
         today=now.date(),
@@ -23,9 +29,10 @@ def main() -> None:
     )
     notion = NotionClient(config)
     assignment_stats = notion.upsert(assignments)
-    study_stats = notion.upsert(plan, prune_prefix="study:")
+    study_stats = notion.upsert(plan, prune_prefixes=("study:", "work:"))
     print(
-        f"Canvas: {assignment_stats.created} created, {assignment_stats.updated} updated; "
+        f"Assignments: {assignment_stats.created} created, "
+        f"{assignment_stats.updated} updated; "
         f"study plan: {study_stats.created} created, {study_stats.updated} updated."
     )
 

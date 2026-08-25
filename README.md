@@ -3,6 +3,10 @@ This automation reads the private Canvas calendar feed, upserts Canvas deadlines
 the existing Notion **Master To-Do List**, and creates small study sessions that answer
 “what should I do today?” without encouraging cramming.
 
+Known syllabus schedules can also be stored in `data/*.json`. The included Personal
+Health schedule preloads all 45 module assignments and lets the daily planner use them
+before Canvas publishes its calendar events.
+
 ## Planning rules
 
 - Homework/work is planned first, up to **60 minutes per day**.
