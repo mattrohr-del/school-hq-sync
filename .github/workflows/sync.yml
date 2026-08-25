@@ -1,0 +1,35 @@
+name: Sync Canvas to School HQ
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 6:15 AM America/Chicago during daylight time. A second daily run is harmless
+    # because source IDs make the sync idempotent.
+    - cron: "15 11 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Sync assignments and rebuild study plan
+        env:
+          CANVAS_ICS_URL: ${{ secrets.CANVAS_ICS_URL }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          TIMEZONE: America/Chicago
+          DAILY_STUDY_MINUTES: "60"
+          PLANNING_HORIZON_DAYS: "14"
+          OPTIONAL_STUDY_DAYS: "4,5"
+          EXCLUDED_COURSES: Career Development
+        run: python -m school_hq.cli
+
