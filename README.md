@@ -16,14 +16,17 @@ the existing Notion **Master To-Do List**, and creates small study sessions that
 - Stable Canvas and study-session source IDs make reruns safe; items are updated rather
   than duplicated.
 
-## Required Notion properties
+## Notion properties
 
-The database must have these two properties:
+This repository is configured for the existing Student Planner **Assignments**
+database:
 
 | Property | Type |
 |---|---|
-| `Name` | Title |
-| `Due Date` | Date |
+| `Assignment Name` | Title |
+| `Deadline` | Date |
+| `Done` | Checkbox (preserved for manual completion) |
+| `Courses` | Existing relation (preserved) |
 
 The stable ID field is also required so reruns cannot create duplicates:
 
@@ -31,17 +34,16 @@ The stable ID field is also required so reruns cannot create duplicates:
 |---|---|
 | `Source ID` | Text |
 
-These properties are optional but recommended. The sync detects their actual type and
-uses them when compatible:
+These helper properties are used by the automation:
 
 | Property | Supported type |
 |---|---|
-| `Status` | Status or Select |
-| `Course` | Select, Multi-select, or Text |
-| `Type` | Select, Multi-select, or Text |
+| `Course` | Text |
+| `Type` | Text |
 | `Notes` | Text |
 
-Property names can be overridden with the variables shown in `.env.example`.
+The workflow supplies the Student Planner property-name mapping. Other Notion
+databases can override the names with the variables shown in `.env.example`.
 
 ## GitHub setup
 
@@ -49,7 +51,7 @@ Add these repository secrets under **Settings → Secrets and variables → Acti
 
 1. `CANVAS_ICS_URL` — Canvas → Calendar → Calendar Feed; copy the private `.ics` URL.
 2. `NOTION_TOKEN` — the token for the integration already connected to School HQ.
-3. `NOTION_DATABASE_ID` — the 32-character ID from the Master To-Do List URL.
+3. `NOTION_DATABASE_ID` — the 32-character ID from the Assignments database URL.
 
 Then open **Actions → Sync Canvas to School HQ → Run workflow** for the first test.
 After that, GitHub Actions runs it every morning. Canvas calendar-feed URLs and Notion

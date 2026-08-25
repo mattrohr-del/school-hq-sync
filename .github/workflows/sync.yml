@@ -26,10 +26,15 @@ jobs:
           CANVAS_ICS_URL: ${{ secrets.CANVAS_ICS_URL }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          NOTION_TITLE_PROPERTY: Assignment Name
+          NOTION_DUE_PROPERTY: Deadline
+          NOTION_COURSE_PROPERTY: Course
+          NOTION_TYPE_PROPERTY: Type
+          NOTION_SOURCE_ID_PROPERTY: Source ID
+          NOTION_NOTES_PROPERTY: Notes
           TIMEZONE: America/Chicago
           DAILY_STUDY_MINUTES: "60"
           PLANNING_HORIZON_DAYS: "14"
           OPTIONAL_STUDY_DAYS: "4,5"
           EXCLUDED_COURSES: Career Development
         run: python -m school_hq.cli
-
