@@ -16,6 +16,10 @@ class StudySession:
     minutes: int
     optional: bool
     assignment_source_id: str
+    session_type: str
+
+
+ASSESSMENT_KEYWORDS = ("exam", "test", "midterm", "final")
 
 
 def _excluded(course: str, excluded_courses: tuple[str, ...]) -> bool:
@@ -23,19 +27,26 @@ def _excluded(course: str, excluded_courses: tuple[str, ...]) -> bool:
     return any(excluded.casefold() in normalized for excluded in excluded_courses)
 
 
+def _is_assessment(item: CanvasItem) -> bool:
+    text = f"{item.name} {item.description}".casefold()
+    return any(keyword in text for keyword in ASSESSMENT_KEYWORDS)
+
+
 def build_plan(
     assignments: list[CanvasItem],
     today: date,
     daily_minutes: int = 60,
+    test_study_minutes: int = 20,
     horizon_days: int = 14,
     optional_days: frozenset[int] = frozenset({4, 5}),
     excluded_courses: tuple[str, ...] = ("Career Development",),
 ) -> list[StudySession]:
-    """Create small, finite sessions without exceeding the daily study budget.
+    """Create homework sessions plus a separate daily test-study habit.
 
-    Sessions are scheduled on the days before an assignment, prioritizing closer due
-    dates. Friday and Saturday are fallback-only by default. Each assignment receives
-    at most three 30-minute sessions; short/near work receives one.
+    Homework receives one to three 30-minute work sessions within the daily homework
+    budget. When an assessment is approaching, the closest assessment receives one
+    additional 20-minute study session on every normal study day. Test study does not
+    consume homework capacity. Friday and Saturday remain optional.
     """
     eligible = [
         item
@@ -49,7 +60,10 @@ def build_plan(
     }
     sessions: list[StudySession] = []
 
-    for item in eligible:
+    homework = [item for item in eligible if not _is_assessment(item)]
+    assessments = [item for item in eligible if _is_assessment(item)]
+
+    for item in homework:
         days_until_due = (item.due.date() - today).days
         target_sessions = 1 if days_until_due <= 2 else (2 if days_until_due <= 6 else 3)
         candidate_dates = [
@@ -74,14 +88,44 @@ def build_plan(
             digest = hashlib.sha256(f"{item.source_id}|{day.isoformat()}".encode()).hexdigest()[:20]
             sessions.append(
                 StudySession(
-                    source_id=f"study:{digest}",
-                    name=f"Study: {item.name}",
-                    due=datetime.combine(day, datetime.min.time(), item.due.tzinfo).replace(hour=18),
+                    source_id=f"work:{digest}",
+                    name=f"Work on: {item.name}",
+                    # Homework comes first in the daily plan.
+                    due=datetime.combine(day, datetime.min.time(), item.due.tzinfo).replace(hour=17),
                     course=item.course,
                     minutes=30,
                     optional=day.weekday() in optional_days,
                     assignment_source_id=item.source_id,
+                    session_type="Work Session",
                 )
             )
-    return sorted(sessions, key=lambda session: (session.due, session.course, session.name))
 
+    # Add exactly one 20-minute test-study block per normal day. If multiple
+    # assessments are coming up, focus on the closest one first.
+    for offset in range(horizon_days + 1):
+        day = today + timedelta(days=offset)
+        if day.weekday() in optional_days:
+            continue
+        upcoming = [item for item in assessments if day < item.due.date()]
+        if not upcoming:
+            continue
+        item = min(upcoming, key=lambda candidate: candidate.due)
+        digest = hashlib.sha256(
+            f"test-study|{item.source_id}|{day.isoformat()}".encode()
+        ).hexdigest()[:20]
+        sessions.append(
+            StudySession(
+                source_id=f"study:{digest}",
+                name=f"Study for: {item.name}",
+                # Test study follows the normal homework/work block.
+                due=datetime.combine(day, datetime.min.time(), item.due.tzinfo).replace(
+                    hour=18, minute=15
+                ),
+                course=item.course,
+                minutes=test_study_minutes,
+                optional=False,
+                assignment_source_id=item.source_id,
+                session_type="Study Session",
+            )
+        )
+    return sorted(sessions, key=lambda session: (session.due, session.course, session.name))

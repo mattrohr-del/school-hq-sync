@@ -16,6 +16,7 @@ def main() -> None:
         assignments,
         today=now.date(),
         daily_minutes=config.daily_minutes,
+        test_study_minutes=config.test_study_minutes,
         horizon_days=config.horizon_days,
         optional_days=config.optional_days,
         excluded_courses=config.excluded_courses,

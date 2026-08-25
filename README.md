@@ -5,11 +5,14 @@ the existing Notion **Master To-Do List**, and creates small study sessions that
 
 ## Planning rules
 
-- Maximum planned study time: **60 minutes per day**.
+- Homework/work is planned first, up to **60 minutes per day**.
+- When an exam, test, midterm, or final is within 14 days, add **20 minutes of
+  test study after the work block**. This is separate, so a full day can total
+  80 minutes.
 - Normal study days: **Sunday through Thursday**.
 - Friday and Saturday are optional overflow days only.
-- Each upcoming assignment receives one to three 30-minute sessions, based on how far
-  away it is. The closest due dates get capacity first.
+- Each upcoming homework assignment receives one to three 30-minute work sessions,
+  based on how far away it is. The closest due dates get capacity first.
 - **Career Development is excluded**.
 - The plan looks ahead 14 days and is rebuilt every morning, so a changed Canvas due
   date automatically changes the next plan.
