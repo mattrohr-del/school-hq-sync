@@ -21,7 +21,7 @@ def assignment(name: str, course: str, due_day: int) -> CanvasItem:
 
 def test_plan_respects_daily_hour_and_avoids_optional_days_when_possible():
     plan = build_plan(
-        [assignment("Exam", "M300", 31), assignment("Quiz", "C200", 30)],
+        [assignment("Case Brief", "M300", 31), assignment("Quiz", "C200", 30)],
         today=date(2026, 8, 24),
     )
     minutes = {}
@@ -43,4 +43,34 @@ def test_near_assignment_gets_one_small_action():
     plan = build_plan([assignment("Quiz", "C200", 26)], today=date(2026, 8, 24))
     assert len(plan) == 1
     assert plan[0].minutes == 30
+    assert plan[0].session_type == "Work Session"
 
+
+def test_upcoming_exam_adds_twenty_minutes_each_normal_day():
+    plan = build_plan([assignment("Midterm Exam", "M300", 31)], today=date(2026, 8, 24))
+    assert len(plan) == 5
+    assert all(session.minutes == 20 for session in plan)
+    assert all(session.session_type == "Study Session" for session in plan)
+    assert all(session.due.weekday() not in {4, 5} for session in plan)
+
+
+def test_test_study_is_separate_from_homework_hour():
+    plan = build_plan(
+        [
+            assignment("Midterm Test", "M300", 31),
+            assignment("Project", "C200", 31),
+            assignment("Paper", "D321", 31),
+        ],
+        today=date(2026, 8, 24),
+    )
+    totals = {}
+    for session in plan:
+        totals[session.due.date()] = totals.get(session.due.date(), 0) + session.minutes
+    assert max(totals.values()) == 80
+
+    monday = sorted(
+        (session for session in plan if session.due.date() == date(2026, 8, 24)),
+        key=lambda session: session.due,
+    )
+    assert monday[0].session_type == "Work Session"
+    assert monday[-1].session_type == "Study Session"

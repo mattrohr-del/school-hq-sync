@@ -16,6 +16,7 @@ class Config:
     notion_database_id: str
     timezone: ZoneInfo
     daily_minutes: int
+    test_study_minutes: int
     horizon_days: int
     optional_days: frozenset[int]
     excluded_courses: tuple[str, ...]
@@ -44,6 +45,7 @@ class Config:
             notion_database_id=os.environ["NOTION_DATABASE_ID"].replace("-", ""),
             timezone=ZoneInfo(os.getenv("TIMEZONE", "America/Chicago")),
             daily_minutes=int(os.getenv("DAILY_STUDY_MINUTES", "60")),
+            test_study_minutes=int(os.getenv("DAILY_TEST_STUDY_MINUTES", "20")),
             horizon_days=int(os.getenv("PLANNING_HORIZON_DAYS", "14")),
             optional_days=optional_days,
             excluded_courses=_csv(os.getenv("EXCLUDED_COURSES", "Career Development")),
@@ -55,4 +57,3 @@ class Config:
             source_id_property=os.getenv("NOTION_SOURCE_ID_PROPERTY", "Source ID"),
             notes_property=os.getenv("NOTION_NOTES_PROPERTY", "Notes"),
         )
-

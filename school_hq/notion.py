@@ -157,7 +157,7 @@ class NotionClient:
                     due=record.due,
                     source_id=record.source_id,
                     course=record.course,
-                    item_type="Study Session",
+                    item_type=record.session_type,
                 )
                 if self.config.notes_property in self.schema:
                     props[self.config.notes_property] = self._rich_text(label)
