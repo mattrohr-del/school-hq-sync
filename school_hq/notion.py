@@ -122,14 +122,14 @@ class NotionClient:
         self,
         records: list[CanvasItem | StudySession],
         *,
-        prune_prefix: str | None = None,
+        prune_prefixes: tuple[str, ...] = (),
     ) -> SyncStats:
         existing = self.existing_by_source()
         stats = SyncStats()
         desired_ids = {record.source_id for record in records}
-        if prune_prefix:
+        if prune_prefixes:
             for source_id, page in existing.items():
-                if source_id.startswith(prune_prefix) and source_id not in desired_ids:
+                if source_id.startswith(prune_prefixes) and source_id not in desired_ids:
                     response = self.session.patch(
                         f"{self.base}/pages/{page['id']}",
                         json={"archived": True},
