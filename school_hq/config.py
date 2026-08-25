@@ -14,6 +14,8 @@ class Config:
     canvas_ics_url: str
     notion_token: str
     notion_database_id: str
+    notion_plan_database_id: str
+    notion_courses_database_id: str
     timezone: ZoneInfo
     daily_minutes: int
     test_study_minutes: int
@@ -30,7 +32,10 @@ class Config:
 
     @classmethod
     def from_env(cls) -> "Config":
-        required = ("CANVAS_ICS_URL", "NOTION_TOKEN", "NOTION_DATABASE_ID")
+        required = (
+            "CANVAS_ICS_URL", "NOTION_TOKEN", "NOTION_DATABASE_ID",
+            "NOTION_PLAN_DATABASE_ID", "NOTION_COURSES_DATABASE_ID",
+        )
         missing = [name for name in required if not os.getenv(name)]
         if missing:
             raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
@@ -43,6 +48,8 @@ class Config:
             canvas_ics_url=os.environ["CANVAS_ICS_URL"],
             notion_token=os.environ["NOTION_TOKEN"],
             notion_database_id=os.environ["NOTION_DATABASE_ID"].replace("-", ""),
+            notion_plan_database_id=os.environ["NOTION_PLAN_DATABASE_ID"].replace("-", ""),
+            notion_courses_database_id=os.environ["NOTION_COURSES_DATABASE_ID"].replace("-", ""),
             timezone=ZoneInfo(os.getenv("TIMEZONE", "America/Chicago")),
             daily_minutes=int(os.getenv("DAILY_STUDY_MINUTES", "60")),
             test_study_minutes=int(os.getenv("DAILY_TEST_STUDY_MINUTES", "20")),

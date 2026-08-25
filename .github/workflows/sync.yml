@@ -26,12 +26,14 @@ jobs:
           CANVAS_ICS_URL: ${{ secrets.CANVAS_ICS_URL }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-          NOTION_TITLE_PROPERTY: Assignment Name
-          NOTION_DUE_PROPERTY: Deadline
+          NOTION_PLAN_DATABASE_ID: 0615805759a5403cbb543b9e9ba0fd19
+          NOTION_COURSES_DATABASE_ID: e66180780241438aad945cc99b67886a
+          NOTION_TITLE_PROPERTY: Assignment
+          NOTION_DUE_PROPERTY: Due
           NOTION_COURSE_PROPERTY: Course
           NOTION_TYPE_PROPERTY: Type
-          NOTION_SOURCE_ID_PROPERTY: Source ID
-          NOTION_NOTES_PROPERTY: Notes
+          NOTION_SOURCE_ID_PROPERTY: Canvas UID
+          NOTION_NOTES_PROPERTY: Details
           TIMEZONE: America/Chicago
           DAILY_STUDY_MINUTES: "60"
           DAILY_TEST_STUDY_MINUTES: "20"
