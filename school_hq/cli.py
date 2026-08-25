@@ -28,8 +28,8 @@ def main() -> None:
         excluded_courses=config.excluded_courses,
     )
     notion = NotionClient(config)
-    assignment_stats = notion.upsert(assignments)
-    study_stats = notion.upsert(plan, prune_prefixes=("study:", "work:"))
+    assignment_stats, assignment_pages = notion.sync_assignments(assignments)
+    study_stats = notion.sync_plan(plan, assignment_pages)
     print(
         f"Assignments: {assignment_stats.created} created, "
         f"{assignment_stats.updated} updated; "
